@@ -12,4 +12,7 @@ export default defineConfig({
       extensions,
     }),
   ],
+  css: {
+    postcss: './postcss.config.js',
+  },
 });
