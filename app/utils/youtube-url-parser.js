@@ -34,7 +34,7 @@ export function parseYouTubeUrl(input) {
         return match[2];
       }
     }
-  } catch (e) {
+  } catch {
     return null;
   }
 
