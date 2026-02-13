@@ -75,6 +75,7 @@ export default defineConfig([
       'ember-cli-build.js',
       'postcss.config.js',
       'tailwind.config.js',
+      'server/**/*.js',
     ],
     plugins: {
       n,

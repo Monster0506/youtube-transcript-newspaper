@@ -26,8 +26,8 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "concurrently \"bun:start:backend\" \"bun:start:frontend\" --names \"api,app\" --prefix-colors \"blue,magenta\"",
-    "start:backend": "cd server && bun run start",
+    "start": "concurrently \"node server/index.js\" \"vite\" --names \"api,app\" --prefix-colors \"blue,magenta\"",
+    "start:backend": "node server/index.js",
     "start:frontend": "vite",
     "test": "vite build --mode development && ember test --path dist"
   },
@@ -96,6 +96,6 @@
     "edition": "octane"
   },
   "dependencies": {
-    "youtube-transcript": "^1.2.1"
+    "youtubei.js": "^16.0.1"
   }
 }
