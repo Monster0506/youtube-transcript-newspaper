@@ -96,6 +96,7 @@
     "edition": "octane"
   },
   "dependencies": {
+    "ember-phosphor-icons": "^1.0.2",
     "youtubei.js": "^16.0.1"
   }
 }

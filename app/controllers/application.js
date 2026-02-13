@@ -15,6 +15,12 @@ export default class ApplicationController extends Controller {
   @tracked groupedTranscript = null;
   @tracked transcriptStats = null;
   @tracked errorMessage = null;
+  @tracked tocOpen = false;
+
+  @action
+  toggleToc() {
+    this.tocOpen = !this.tocOpen;
+  }
 
   @action
   updateVideoUrl(event) {
@@ -64,5 +70,6 @@ export default class ApplicationController extends Controller {
     this.groupedTranscript = null;
     this.transcriptStats = null;
     this.errorMessage = null;
+    this.tocOpen = false;
   }
 }

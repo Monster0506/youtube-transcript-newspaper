@@ -5,6 +5,7 @@
     "": {
       "name": "youtube-transcript-viewer",
       "dependencies": {
+        "ember-phosphor-icons": "^1.0.2",
         "youtubei.js": "^16.0.1",
       },
       "devDependencies": {
@@ -1041,6 +1042,8 @@
     "ember-modifier": ["ember-modifier@4.3.0", "", { "dependencies": { "@embroider/addon-shim": "^1.8.7", "decorator-transforms": "^2.0.0" } }, "sha512-O0rirSLQbGg0VJ/NqoQ4uN1bh2iAekZC/Ykma+FkjCM2ofrO38u+d8n3+AK6uVWeMJmogGX2KL+Is5fofoInJg=="],
 
     "ember-page-title": ["ember-page-title@9.0.3", "", { "dependencies": { "@embroider/addon-shim": "^1.8.7", "@simple-dom/document": "^1.4.0" } }, "sha512-fedRHUsvq8tIZgOii8jTrfAyeq+la/9H5eAzhNNwEyzo7nDMmqK2SxsyBUGXprd8fOacsPabLlzlucMi/4mUpA=="],
+
+    "ember-phosphor-icons": ["ember-phosphor-icons@1.0.2", "", { "dependencies": { "@embroider/addon-shim": "^1.8.7", "decorator-transforms": "^1.0.1" } }, "sha512-N3naRavKUoA35Vmvt/USLMRhP5zY1GP05ZWpDrgOyRwM8D2PLUgGPMdK4yyFXOGE7hyHPlZ4aUlExht3ZTwbfQ=="],
 
     "ember-qunit": ["ember-qunit@9.0.4", "", { "dependencies": { "@embroider/addon-shim": "^1.9.0", "@embroider/macros": "^1.16.12", "qunit-theme-ember": "^1.0.0" }, "peerDependencies": { "@ember/test-helpers": ">=3.0.3", "qunit": "^2.13.0" } }, "sha512-rv6gKvrdXdPBTdSZC5co82eIcDWWVR7RjafU/c+5TTz290oXhIHPoVuZbcO2F5RiAqkTW0jKzwkCP8y+2tCjFw=="],
 
@@ -2346,6 +2349,8 @@
 
     "ember-eslint-parser/eslint-scope": ["eslint-scope@7.2.2", "", { "dependencies": { "esrecurse": "^4.3.0", "estraverse": "^5.2.0" } }, "sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg=="],
 
+    "ember-phosphor-icons/decorator-transforms": ["decorator-transforms@1.2.1", "", { "dependencies": { "@babel/plugin-syntax-decorators": "^7.23.3", "babel-import-util": "^2.0.1" } }, "sha512-UUtmyfdlHvYoX3VSG1w5rbvBQ2r5TX1JsE4hmKU9snleFymadA3VACjl6SRfi9YgBCSjBbfQvR1bs9PRW9yBKw=="],
+
     "ember-resolver/ember-cli-babel": ["ember-cli-babel@7.26.11", "", { "dependencies": { "@babel/core": "^7.12.0", "@babel/helper-compilation-targets": "^7.12.0", "@babel/plugin-proposal-class-properties": "^7.16.5", "@babel/plugin-proposal-decorators": "^7.13.5", "@babel/plugin-proposal-private-methods": "^7.16.5", "@babel/plugin-proposal-private-property-in-object": "^7.16.5", "@babel/plugin-transform-modules-amd": "^7.13.0", "@babel/plugin-transform-runtime": "^7.13.9", "@babel/plugin-transform-typescript": "^7.13.0", "@babel/polyfill": "^7.11.5", "@babel/preset-env": "^7.16.5", "@babel/runtime": "7.12.18", "amd-name-resolver": "^1.3.1", "babel-plugin-debug-macros": "^0.3.4", "babel-plugin-ember-data-packages-polyfill": "^0.1.2", "babel-plugin-ember-modules-api-polyfill": "^3.5.0", "babel-plugin-module-resolver": "^3.2.0", "broccoli-babel-transpiler": "^7.8.0", "broccoli-debug": "^0.6.4", "broccoli-funnel": "^2.0.2", "broccoli-source": "^2.1.2", "calculate-cache-key-for-tree": "^2.0.0", "clone": "^2.1.2", "ember-cli-babel-plugin-helpers": "^1.1.1", "ember-cli-version-checker": "^4.1.0", "ensure-posix-path": "^1.0.2", "fixturify-project": "^1.10.0", "resolve-package-path": "^3.1.0", "rimraf": "^3.0.1", "semver": "^5.5.0" } }, "sha512-JJYeYjiz/JTn34q7F5DSOjkkZqy8qwFOOxXfE6pe9yEJqWGu4qErKxlz8I22JoVEQ/aBUO+OcKTpmctvykM9YA=="],
 
     "ember-source/inflection": ["inflection@2.0.1", "", {}, "sha512-wzkZHqpb4eGrOKBl34xy3umnYHx8Si5R1U4fwmdxLo5gdH6mEK8gclckTj/qWqy4Je0bsDYe/qazZYuO7xe3XQ=="],
@@ -2727,6 +2732,8 @@
     "ember-cli/inquirer/run-async": ["run-async@4.0.6", "", {}, "sha512-IoDlSLTs3Yq593mb3ZoKWKXMNu3UpObxhgA/Xuid5p4bbfi2jdY1Hj0m1K+0/tEuQTxIGMhQDqGjKb7RuxGpAQ=="],
 
     "ember-cli/walk-sync/@types/minimatch": ["@types/minimatch@5.1.2", "", {}, "sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA=="],
+
+    "ember-phosphor-icons/decorator-transforms/babel-import-util": ["babel-import-util@2.1.1", "", {}, "sha512-3qBQWRjzP9NreSH/YrOEU1Lj5F60+pWSLP0kIdCWxjFHH7pX2YPHIxQ67el4gnMNfYoDxSDGcT0zpVlZ+gVtQA=="],
 
     "ember-resolver/ember-cli-babel/@babel/plugin-proposal-private-property-in-object": ["@babel/plugin-proposal-private-property-in-object@7.21.11", "", { "dependencies": { "@babel/helper-annotate-as-pure": "^7.18.6", "@babel/helper-create-class-features-plugin": "^7.21.0", "@babel/helper-plugin-utils": "^7.20.2", "@babel/plugin-syntax-private-property-in-object": "^7.14.5" }, "peerDependencies": { "@babel/core": "^7.0.0-0" } }, "sha512-0QZ8qP/3RLDVBwBFoWAwCtgcDZJVwA5LUJRZU8x2YFfKNuFq161wK3cuGrALu5yiPu+vzwTAg/sMWVNeWeNyaw=="],
 
