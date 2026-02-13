@@ -26,7 +26,9 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "vite",
+    "start": "concurrently \"bun:start:backend\" \"bun:start:frontend\" --names \"api,app\" --prefix-colors \"blue,magenta\"",
+    "start:backend": "cd server && bun run start",
+    "start:frontend": "vite",
     "test": "vite build --mode development && ember test --path dist"
   },
   "devDependencies": {
