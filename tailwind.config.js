@@ -4,27 +4,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        newsprint: '#f5f1e8', // aged newsprint page
-        column: '#faf8f3', // article column background
+        newsprint: 'var(--color-newsprint)',
+        column: 'var(--color-column)',
         ink: {
-          DEFAULT: '#1c1a14', // near-black ink
-          secondary: '#48453c', // secondary / byline
-          tertiary: '#8c897e', // timestamps, labels
+          DEFAULT: 'var(--color-ink)',
+          secondary: 'var(--color-ink-secondary)',
+          tertiary: 'var(--color-ink-tertiary)',
         },
         rule: {
-          DEFAULT: '#c8c2b4', // light ruled line
-          dark: '#48453c', // heavy ink rule
+          DEFAULT: 'var(--color-rule)',
+          dark: 'var(--color-rule-dark)',
         },
         accent: {
-          DEFAULT: '#8b1a1a', // editorial red
-          hover: '#711414',
-          bg: '#fdf5f5', // error / alert tint
+          DEFAULT: 'var(--color-accent)',
+          hover: 'var(--color-accent-hover)',
+          bg: 'var(--color-accent-bg)',
         },
       },
       fontFamily: {
-        serif: ['Georgia', 'Times New Roman', 'Times', 'serif'],
-        sans: ['ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+        headline: ['Playfair Display', 'Georgia', 'Times New Roman', 'serif'],
+        serif: ['Lora', 'Georgia', 'Times New Roman', 'Times', 'serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
     },
   },

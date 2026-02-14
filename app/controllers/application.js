@@ -17,10 +17,28 @@ export default class ApplicationController extends Controller {
   @tracked transcriptStats = null;
   @tracked errorMessage = null;
   @tracked tocOpen = false;
+  @tracked darkMode = false;
+
+  constructor() {
+    super(...arguments);
+    // Restore theme from localStorage
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      this.darkMode = true;
+      document.documentElement.classList.add('dark');
+    }
+  }
 
   @action
   toggleToc() {
     this.tocOpen = !this.tocOpen;
+  }
+
+  @action
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    document.documentElement.classList.toggle('dark', this.darkMode);
+    localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
   }
 
   @action

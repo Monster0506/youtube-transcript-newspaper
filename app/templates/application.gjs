@@ -3,6 +3,8 @@ import { on } from '@ember/modifier';
 import PhList from 'ember-phosphor-icons/components/ph-list';
 import PhSidebar from 'ember-phosphor-icons/components/ph-sidebar';
 import PhArrowLeft from 'ember-phosphor-icons/components/ph-arrow-left';
+import PhMoon from 'ember-phosphor-icons/components/ph-moon';
+import PhSun from 'ember-phosphor-icons/components/ph-sun';
 
 function speakerLines(segments) {
   const text = segments.map((s) => s.text).join(' ');
@@ -62,97 +64,142 @@ function formatTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+function todayDate() {
+  return new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function isFirstChapter(index) {
+  return index === 0;
+}
+
 <template>
   {{pageTitle "YouTube Transcript Viewer"}}
 
-  <div class="min-h-screen bg-newsprint">
-    <div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="min-h-screen bg-newsprint paper-texture">
+    <div class="max-w-5xl mx-auto px-4 py-8">
 
-      {{! Masthead }}
-      <header class="mb-8 border-t-4 border-ink pt-3">
-        <h1
-          class="text-5xl font-bold text-ink font-serif text-center tracking-tight mb-3"
-        >
-          YouTube Transcript Viewer
-        </h1>
-        <div
-          class="border-t-2 border-b border-ink py-1.5 flex items-center justify-between"
-        >
-          <p class="text-ink-secondary font-serif italic text-sm">
-            Extract and read YouTube video transcripts as articles
-          </p>
-          <p
-            class="text-ink-tertiary text-xs font-sans uppercase tracking-widest"
+      {{! ═══ Masthead ═══ }}
+      <header class="mb-8">
+        {{! Top decorative rule }}
+        <div class="border-t-[6px] border-double border-ink mb-1"></div>
+        <div class="border-t border-ink mb-4"></div>
+
+        {{! Dateline bar }}
+        <div class="flex items-center justify-between mb-3">
+          <span class="dateline">{{todayDate}}</span>
+          <button
+            type="button"
+            {{on "click" @controller.toggleDarkMode}}
+            class="theme-toggle"
           >
-            Est.
-            {{currentYear}}
+            {{#if @controller.darkMode}}
+              <PhSun @size="14" />
+              <span>Morning Edition</span>
+            {{else}}
+              <PhMoon @size="14" />
+              <span>Evening Edition</span>
+            {{/if}}
+          </button>
+          <span class="dateline">Vol. I · No. 1</span>
+        </div>
+
+        {{! Newspaper title }}
+        <div class="border-t-2 border-ink pt-2 pb-1">
+          <h1
+            class="text-6xl font-headline font-black text-ink text-center tracking-tight leading-none"
+          >The Transcript Viewer</h1>
+        </div>
+
+        {{! Subtitle bar }}
+        <div class="byline-bar mt-1">
+          <p class="text-ink-secondary font-serif italic text-sm">
+            YouTube video transcripts, rendered as readable articles
+          </p>
+          <p class="dateline">
+            Est. {{currentYear}}
           </p>
         </div>
       </header>
 
-      {{! URL Input Form — hidden when viewing a transcript }}
+      {{! ═══ URL Input Form — hidden when viewing a transcript ═══ }}
       {{#unless @controller.groupedTranscript}}
-        <form {{on "submit" @controller.loadTranscript}} class="mb-8">
-          <div class="flex gap-2">
-            <label for="video-url" class="sr-only">YouTube URL or video ID</label>
-            <input
-              id="video-url"
-              type="text"
-              value={{@controller.videoUrl}}
-              {{on "input" @controller.updateVideoUrl}}
-              placeholder="Enter YouTube URL or video ID (e.g. https://youtu.be/...)"
-              class="flex-1 px-4 py-3 border border-rule-dark bg-column text-ink placeholder:text-ink-tertiary focus:ring-2 focus:ring-ink focus:border-transparent outline-none font-serif"
-              disabled={{@controller.transcript.isLoading}}
-            />
-            <button
-              type="submit"
-              class="px-6 py-3 bg-ink text-column hover:bg-ink/80 disabled:bg-ink-tertiary disabled:cursor-not-allowed font-sans font-medium tracking-wide transition-colors"
-              disabled={{@controller.transcript.isLoading}}
-            >
-              {{#if @controller.transcript.isLoading}}
-                Loading…
-              {{else}}
-                Get Transcript
-              {{/if}}
-            </button>
+        <div class="mt-12 mb-12 max-w-2xl mx-auto">
+          {{! Decorative flourish }}
+          <div class="text-center mb-6">
+            <span class="text-ink-tertiary text-2xl tracking-[0.5em] select-none">⸻ ✦ ⸻</span>
           </div>
-        </form>
+
+          <p class="text-center text-ink-secondary font-serif italic text-lg mb-8">
+            Paste a YouTube URL below to extract and read its transcript
+          </p>
+
+          <form {{on "submit" @controller.loadTranscript}}>
+            <div class="flex gap-2">
+              <label for="video-url" class="sr-only">YouTube URL or video ID</label>
+              <input
+                id="video-url"
+                type="text"
+                value={{@controller.videoUrl}}
+                {{on "input" @controller.updateVideoUrl}}
+                placeholder="https://youtu.be/... or video ID"
+                class="flex-1 px-4 py-3 border border-rule-dark bg-column text-ink placeholder:text-ink-tertiary focus:ring-2 focus:ring-accent focus:border-transparent outline-none font-serif text-lg"
+                disabled={{@controller.transcript.isLoading}}
+              />
+              <button
+                type="submit"
+                class="px-8 py-3 bg-ink text-column hover:bg-ink-secondary disabled:bg-ink-tertiary disabled:cursor-not-allowed font-sans font-semibold tracking-wide transition-colors uppercase text-sm"
+                disabled={{@controller.transcript.isLoading}}
+              >
+                {{#if @controller.transcript.isLoading}}
+                  Loading…
+                {{else}}
+                  Read
+                {{/if}}
+              </button>
+            </div>
+          </form>
+        </div>
       {{/unless}}
 
       {{! Error Message }}
       {{#if @controller.errorMessage}}
-        <div class="mb-6 p-4 bg-accent-bg border border-accent/30">
+        <div class="mb-6 p-4 bg-accent-bg border-l-4 border-accent">
           <p class="text-accent font-serif">{{@controller.errorMessage}}</p>
         </div>
       {{/if}}
 
       {{! Loading Spinner }}
       {{#if @controller.transcript.isLoading}}
-        <div class="flex items-center justify-center py-12">
+        <div class="flex items-center justify-center py-16">
           <div
-            class="animate-spin rounded-full h-12 w-12 border-b-2 border-ink"
+            class="animate-spin rounded-full h-10 w-10 border-2 border-ink border-t-transparent"
           ></div>
-          <p class="ml-4 text-ink-secondary font-serif italic">
+          <p class="ml-4 text-ink-secondary font-serif italic text-lg">
             Fetching transcript…
           </p>
         </div>
       {{/if}}
 
-      {{! Results }}
+      {{! ═══ Results ═══ }}
       {{#if @controller.groupedTranscript}}
 
         {{! Sidebar + Article layout }}
-        <div class="flex gap-4 items-start">
+        <div class="flex gap-0 items-start">
 
           {{! TOC Sidebar }}
-          <aside class="shrink-0 sticky top-6 self-start">
+          <aside class="shrink-0 sticky top-6 self-start mr-4">
             <button
               type="button"
               {{on "click" @controller.toggleToc}}
               class="flex items-center gap-2 px-3 py-2 bg-column border border-rule-dark hover:bg-newsprint transition-colors text-sm font-sans font-medium text-ink w-full"
             >
               {{#if @controller.tocOpen}}
-                <PhSidebar @size="16" /><span>Hide chapters</span>
+                <PhSidebar @size="16" /><span>Hide</span>
               {{else}}
                 <PhList @size="16" /><span>Chapters</span>
               {{/if}}
@@ -184,41 +231,50 @@ function formatTime(seconds) {
           </aside>
 
           {{! Main content }}
-          <div class="flex-1 min-w-0">
+          <div class="flex-1 min-w-0 column-rule">
 
-            {{! Title + Clear Button }}
-            <div class="mb-4 flex items-baseline justify-between gap-4">
+            {{! Headline + Back Button }}
+            <div class="mb-4 flex items-start justify-between gap-4">
               {{#if @controller.videoTitle}}
-                <h2 class="text-2xl font-bold text-ink font-serif leading-tight truncate min-w-0">{{@controller.videoTitle}}</h2>
+                <h2 class="text-3xl font-headline font-black text-ink leading-tight min-w-0">{{@controller.videoTitle}}</h2>
               {{/if}}
               <button
                 type="button"
                 {{on "click" @controller.clearTranscript}}
-                class="text-sm text-ink-tertiary hover:text-ink transition-colors font-sans shrink-0 whitespace-nowrap"
+                class="text-sm text-ink-tertiary hover:text-accent transition-colors font-sans shrink-0 whitespace-nowrap mt-1"
               >
-                <PhArrowLeft @size="16" class="inline" />
+                <PhArrowLeft @size="14" class="inline" />
                 New search
               </button>
             </div>
 
             {{! Transcript Article }}
-            <article class="bg-column border border-rule-dark p-8">
+            <article class="bg-column border border-rule-dark p-8 relative">
               {{#each @controller.groupedTranscript as |chapter index|}}
+                {{! Ornamental divider between chapters (not before first) }}
+                {{#unless (isFirstChapter index)}}
+                  <div class="section-ornament"></div>
+                {{/unless}}
+
                 <section
                   id="chapter-{{index}}"
-                  class="mb-10 last:mb-0 scroll-mt-4"
+                  class="scroll-mt-4"
                 >
-                  <h2
-                    class="text-xl font-bold text-ink font-serif mb-1 flex items-baseline gap-3"
+                  {{! Chapter heading with decorative rules }}
+                  <h3
+                    class="text-xl font-headline font-bold text-ink mb-1 flex items-baseline gap-3"
                   >
                     {{chapter.title}}
                     <span
-                      class="text-sm font-normal text-ink-tertiary font-mono"
+                      class="text-xs font-normal text-ink-tertiary font-mono"
                     >{{formatTime chapter.startTime}}</span>
-                  </h2>
-                  <div class="border-t-2 border-b border-ink mb-4"></div>
+                  </h3>
+                  <div class="border-t-2 border-ink"></div>
+                  <div class="border-t border-ink mt-0.5 mb-4"></div>
+
+                  {{! Body text — first chapter gets drop-cap styling }}
                   <div
-                    class="text-ink-secondary font-serif leading-relaxed space-y-4 text-[1.0625rem]"
+                    class="text-ink-secondary font-serif leading-[1.8] space-y-4 text-[1.0625rem] {{if (isFirstChapter index) 'article-body'}}"
                   >
                     {{#each (speakerLines chapter.segments) as |line|}}
                       <p>{{line}}</p>
@@ -228,31 +284,31 @@ function formatTime(seconds) {
               {{/each}}
             </article>
 
-            {{! Stats Bar — shown after the article }}
+            {{! ═══ Stats Bar — after the article ═══ }}
             {{#if @controller.transcriptStats}}
               <div class="bg-column border border-rule-dark p-6 mt-6">
                 <h2
                   class="text-xs font-sans font-bold text-ink-tertiary uppercase tracking-widest mb-4 border-b border-rule pb-2"
                 >Transcript Statistics</h2>
-                <div class="grid grid-cols-3 gap-4 divide-x divide-rule">
+                <div class="grid grid-cols-3 gap-4">
                   <div class="text-center">
                     <div
-                      class="text-4xl font-bold text-ink font-serif"
+                      class="text-4xl font-headline font-bold text-ink"
                     >{{@controller.transcriptStats.wpm}}</div>
                     <div
                       class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
                     >Words / min</div>
                   </div>
-                  <div class="text-center">
+                  <div class="text-center stat-divider">
                     <div
-                      class="text-4xl font-bold text-ink font-serif"
+                      class="text-4xl font-headline font-bold text-ink"
                     >{{@controller.transcriptStats.totalWords}}</div>
                     <div
                       class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
                     >Total words</div>
                   </div>
-                  <div class="text-center">
-                    <div class="text-4xl font-bold text-ink font-serif">{{formatTime
+                  <div class="text-center stat-divider">
+                    <div class="text-4xl font-headline font-bold text-ink">{{formatTime
                         @controller.transcriptStats.durationSeconds
                       }}</div>
                     <div
@@ -267,6 +323,11 @@ function formatTime(seconds) {
         </div>
 
       {{/if}}
+
+      {{! Footer }}
+      <footer class="mt-12 pt-4 border-t border-rule text-center">
+        <p class="dateline">The Transcript Viewer · {{currentYear}} · All rights reserved</p>
+      </footer>
 
     </div>
   </div>
