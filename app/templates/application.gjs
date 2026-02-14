@@ -6,7 +6,6 @@ import PhArrowLeft from 'ember-phosphor-icons/components/ph-arrow-left';
 import PhMoon from 'ember-phosphor-icons/components/ph-moon';
 import PhSun from 'ember-phosphor-icons/components/ph-sun';
 
-
 function speakerLines(segments) {
   const fullText = segments.map((s) => s.text).join(' ');
   const TARGET = 150;
@@ -40,7 +39,10 @@ function speakerLines(segments) {
           const withThis = wordCount;
           const withoutThis = wordCount - sentenceWords;
 
-          if (current.length > 1 && Math.abs(withoutThis - TARGET) < Math.abs(withThis - TARGET)) {
+          if (
+            current.length > 1 &&
+            Math.abs(withoutThis - TARGET) < Math.abs(withThis - TARGET)
+          ) {
             // Closer without — break before this sentence
             current.pop();
             paragraphs.push(current.join(' '));
@@ -71,7 +73,9 @@ function speakerLines(segments) {
 }
 
 const currentYear = new Date().getFullYear();
-const edition = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][Math.floor(Math.random() * 10)];
+const edition = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][
+  Math.floor(Math.random() * 10)
+];
 const number = Math.floor(Math.random() * 100);
 function formatTime(seconds) {
   if (typeof seconds !== 'number') return '0:00';
@@ -142,7 +146,9 @@ function isFirstChapter(index) {
       {{#unless @controller.groupedTranscript}}
         <div class="mt-12 mb-12 max-w-2xl mx-auto">
 
-          <p class="text-center text-ink-secondary font-serif italic text-lg mb-8">
+          <p
+            class="text-center text-ink-secondary font-serif italic text-lg mb-8"
+          >
             Paste a YouTube URL below to extract and read its transcript
           </p>
 
@@ -244,7 +250,9 @@ function isFirstChapter(index) {
             {{! Headline + Back Button }}
             <div class="mb-4 flex items-start justify-between gap-4">
               {{#if @controller.videoTitle}}
-                <h2 class="text-3xl font-headline font-black text-ink leading-tight min-w-0">{{@controller.videoTitle}}</h2>
+                <h2
+                  class="text-3xl font-headline font-black text-ink leading-tight min-w-0"
+                >{{@controller.videoTitle}}</h2>
               {{/if}}
               <button
                 type="button"
@@ -264,10 +272,7 @@ function isFirstChapter(index) {
                   <div class="section-ornament"></div>
                 {{/unless}}
 
-                <section
-                  id="chapter-{{index}}"
-                  class="scroll-mt-4"
-                >
+                <section id="chapter-{{index}}" class="scroll-mt-4">
                   {{! Chapter heading with decorative rules }}
                   <h3
                     class="text-xl font-headline font-bold text-ink mb-1 flex items-baseline gap-3"
@@ -282,7 +287,8 @@ function isFirstChapter(index) {
 
                   {{! Body text — first chapter gets drop-cap styling }}
                   <div
-                    class="text-ink-secondary font-serif leading-[1.8] space-y-4 text-[1.0625rem] {{if (isFirstChapter index) 'article-body'}}"
+                    class="text-ink-secondary font-serif leading-[1.8] space-y-4 text-[1.0625rem]
+                      {{if (isFirstChapter index) 'article-body'}}"
                   >
                     {{#each (speakerLines chapter.segments) as |line|}}
                       <p>{{line}}</p>
@@ -316,7 +322,9 @@ function isFirstChapter(index) {
                     >Total words</div>
                   </div>
                   <div class="text-center stat-divider">
-                    <div class="text-4xl font-headline font-bold text-ink">{{formatTime
+                    <div
+                      class="text-4xl font-headline font-bold text-ink"
+                    >{{formatTime
                         @controller.transcriptStats.durationSeconds
                       }}</div>
                     <div
@@ -334,7 +342,9 @@ function isFirstChapter(index) {
 
       {{! Footer }}
       <footer class="mt-12 pt-4 border-t border-rule text-center">
-        <p class="dateline">The Transcript Viewer · {{currentYear}} · All rights reserved</p>
+        <p class="dateline">The Transcript Viewer ·
+          {{currentYear}}
+          · All rights reserved</p>
       </footer>
 
     </div>

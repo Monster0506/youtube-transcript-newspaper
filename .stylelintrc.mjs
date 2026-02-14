@@ -4,7 +4,7 @@ export default {
     'at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['tailwind', 'source'],
+        ignoreAtRules: ['tailwind', 'source', 'theme'],
       },
     ],
     // Tailwind v4 uses bare @import 'tailwindcss' (not url())

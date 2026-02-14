@@ -23,7 +23,10 @@ export default class ApplicationController extends Controller {
     super(...arguments);
     // Restore theme from localStorage
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (
+      saved === 'dark' ||
+      (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
       this.darkMode = true;
       document.documentElement.classList.add('dark');
     }
@@ -49,7 +52,7 @@ export default class ApplicationController extends Controller {
 
   @action
   async autoLoad() {
-    await this.loadTranscript({ preventDefault() { } });
+    await this.loadTranscript({ preventDefault() {} });
   }
 
   @action
