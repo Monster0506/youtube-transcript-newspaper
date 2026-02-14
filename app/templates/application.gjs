@@ -71,7 +71,8 @@ function speakerLines(segments) {
 }
 
 const currentYear = new Date().getFullYear();
-
+const edition = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][Math.floor(Math.random() * 10)];
+const number = Math.floor(Math.random() * 100);
 function formatTime(seconds) {
   if (typeof seconds !== 'number') return '0:00';
   const h = Math.floor(seconds / 3600);
@@ -105,8 +106,7 @@ function isFirstChapter(index) {
       {{! ═══ Masthead ═══ }}
       <header class="mb-8">
         {{! Top decorative rule }}
-        <div class="border-t-[6px] border-double border-ink mb-1"></div>
-        <div class="border-t border-ink mb-4"></div>
+        <div class="border-t-[6px] border border-ink mb-1"></div>
 
         {{! Dateline bar }}
         <div class="flex items-center justify-between mb-3">
@@ -124,34 +124,23 @@ function isFirstChapter(index) {
               <span>Evening Edition</span>
             {{/if}}
           </button>
-          <span class="dateline">Vol. I · No. 1</span>
+          <span class="dateline">Vol. {{edition}} No. {{number}}</span>
         </div>
 
         {{! Newspaper title }}
-        <div class="border-t-2 border-ink pt-2 pb-1">
+        <div class="border-t-1 border-ink pt-2 pb-1">
           <h1
             class="text-6xl font-headline font-black text-ink text-center tracking-tight leading-none"
           >The Transcript Viewer</h1>
         </div>
 
         {{! Subtitle bar }}
-        <div class="byline-bar mt-1">
-          <p class="text-ink-secondary font-serif italic text-sm">
-            YouTube video transcripts, rendered as readable articles
-          </p>
-          <p class="dateline">
-            Est. {{currentYear}}
-          </p>
-        </div>
+        <div class="border-t-[6px] border border-ink mt-1"></div>
       </header>
 
       {{! ═══ URL Input Form — hidden when viewing a transcript ═══ }}
       {{#unless @controller.groupedTranscript}}
         <div class="mt-12 mb-12 max-w-2xl mx-auto">
-          {{! Decorative flourish }}
-          <div class="text-center mb-6">
-            <span class="text-ink-tertiary text-2xl tracking-[0.5em] select-none">⸻ ✦ ⸻</span>
-          </div>
 
           <p class="text-center text-ink-secondary font-serif italic text-lg mb-8">
             Paste a YouTube URL below to extract and read its transcript
