@@ -12,6 +12,7 @@ export default class ApplicationController extends Controller {
 
   @tracked v = null;
   @tracked videoUrl = '';
+  @tracked videoTitle = '';
   @tracked groupedTranscript = null;
   @tracked transcriptStats = null;
   @tracked errorMessage = null;
@@ -30,7 +31,7 @@ export default class ApplicationController extends Controller {
 
   @action
   async autoLoad() {
-    await this.loadTranscript({ preventDefault() {} });
+    await this.loadTranscript({ preventDefault() { } });
   }
 
   @action
@@ -40,6 +41,7 @@ export default class ApplicationController extends Controller {
     this.errorMessage = null;
     this.groupedTranscript = null;
     this.transcriptStats = null;
+    this.videoTitle = '';
 
     const videoId = parseYouTubeUrl(this.videoUrl);
 
@@ -57,6 +59,7 @@ export default class ApplicationController extends Controller {
       );
 
       this.transcriptStats = calculateWPM(data.transcript);
+      this.videoTitle = data.title || '';
       this.v = videoId;
     } catch (error) {
       this.errorMessage = error.message || 'Failed to load transcript';
@@ -67,6 +70,7 @@ export default class ApplicationController extends Controller {
   clearTranscript() {
     this.v = null;
     this.videoUrl = '';
+    this.videoTitle = '';
     this.groupedTranscript = null;
     this.transcriptStats = null;
     this.errorMessage = null;

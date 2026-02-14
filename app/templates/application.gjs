@@ -90,32 +90,34 @@ function formatTime(seconds) {
         </div>
       </header>
 
-      {{! URL Input Form }}
-      <form {{on "submit" @controller.loadTranscript}} class="mb-8">
-        <div class="flex gap-2">
-          <label for="video-url" class="sr-only">YouTube URL or video ID</label>
-          <input
-            id="video-url"
-            type="text"
-            value={{@controller.videoUrl}}
-            {{on "input" @controller.updateVideoUrl}}
-            placeholder="Enter YouTube URL or video ID (e.g. https://youtu.be/...)"
-            class="flex-1 px-4 py-3 border border-rule-dark bg-column text-ink placeholder:text-ink-tertiary focus:ring-2 focus:ring-ink focus:border-transparent outline-none font-serif"
-            disabled={{@controller.transcript.isLoading}}
-          />
-          <button
-            type="submit"
-            class="px-6 py-3 bg-ink text-column hover:bg-ink/80 disabled:bg-ink-tertiary disabled:cursor-not-allowed font-sans font-medium tracking-wide transition-colors"
-            disabled={{@controller.transcript.isLoading}}
-          >
-            {{#if @controller.transcript.isLoading}}
-              Loading…
-            {{else}}
-              Get Transcript
-            {{/if}}
-          </button>
-        </div>
-      </form>
+      {{! URL Input Form — hidden when viewing a transcript }}
+      {{#unless @controller.groupedTranscript}}
+        <form {{on "submit" @controller.loadTranscript}} class="mb-8">
+          <div class="flex gap-2">
+            <label for="video-url" class="sr-only">YouTube URL or video ID</label>
+            <input
+              id="video-url"
+              type="text"
+              value={{@controller.videoUrl}}
+              {{on "input" @controller.updateVideoUrl}}
+              placeholder="Enter YouTube URL or video ID (e.g. https://youtu.be/...)"
+              class="flex-1 px-4 py-3 border border-rule-dark bg-column text-ink placeholder:text-ink-tertiary focus:ring-2 focus:ring-ink focus:border-transparent outline-none font-serif"
+              disabled={{@controller.transcript.isLoading}}
+            />
+            <button
+              type="submit"
+              class="px-6 py-3 bg-ink text-column hover:bg-ink/80 disabled:bg-ink-tertiary disabled:cursor-not-allowed font-sans font-medium tracking-wide transition-colors"
+              disabled={{@controller.transcript.isLoading}}
+            >
+              {{#if @controller.transcript.isLoading}}
+                Loading…
+              {{else}}
+                Get Transcript
+              {{/if}}
+            </button>
+          </div>
+        </form>
+      {{/unless}}
 
       {{! Error Message }}
       {{#if @controller.errorMessage}}
@@ -138,41 +140,6 @@ function formatTime(seconds) {
 
       {{! Results }}
       {{#if @controller.groupedTranscript}}
-
-        {{! Stats Bar }}
-        {{#if @controller.transcriptStats}}
-          <div class="bg-column border border-rule-dark p-6 mb-6">
-            <h2
-              class="text-xs font-sans font-bold text-ink-tertiary uppercase tracking-widest mb-4 border-b border-rule pb-2"
-            >Transcript Statistics</h2>
-            <div class="grid grid-cols-3 gap-4 divide-x divide-rule">
-              <div class="text-center">
-                <div
-                  class="text-4xl font-bold text-ink font-serif"
-                >{{@controller.transcriptStats.wpm}}</div>
-                <div
-                  class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
-                >Words / min</div>
-              </div>
-              <div class="text-center">
-                <div
-                  class="text-4xl font-bold text-ink font-serif"
-                >{{@controller.transcriptStats.totalWords}}</div>
-                <div
-                  class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
-                >Total words</div>
-              </div>
-              <div class="text-center">
-                <div class="text-4xl font-bold text-ink font-serif">{{formatTime
-                    @controller.transcriptStats.durationSeconds
-                  }}</div>
-                <div
-                  class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
-                >Duration</div>
-              </div>
-            </div>
-          </div>
-        {{/if}}
 
         {{! Sidebar + Article layout }}
         <div class="flex gap-4 items-start">
@@ -219,12 +186,15 @@ function formatTime(seconds) {
           {{! Main content }}
           <div class="flex-1 min-w-0">
 
-            {{! Clear Button }}
-            <div class="mb-4 flex justify-end">
+            {{! Title + Clear Button }}
+            <div class="mb-4 flex items-baseline justify-between gap-4">
+              {{#if @controller.videoTitle}}
+                <h2 class="text-2xl font-bold text-ink font-serif leading-tight truncate min-w-0">{{@controller.videoTitle}}</h2>
+              {{/if}}
               <button
                 type="button"
                 {{on "click" @controller.clearTranscript}}
-                class="text-sm text-ink-tertiary hover:text-ink transition-colors font-sans"
+                class="text-sm text-ink-tertiary hover:text-ink transition-colors font-sans shrink-0 whitespace-nowrap"
               >
                 <PhArrowLeft @size="16" class="inline" />
                 New search
@@ -257,6 +227,41 @@ function formatTime(seconds) {
                 </section>
               {{/each}}
             </article>
+
+            {{! Stats Bar — shown after the article }}
+            {{#if @controller.transcriptStats}}
+              <div class="bg-column border border-rule-dark p-6 mt-6">
+                <h2
+                  class="text-xs font-sans font-bold text-ink-tertiary uppercase tracking-widest mb-4 border-b border-rule pb-2"
+                >Transcript Statistics</h2>
+                <div class="grid grid-cols-3 gap-4 divide-x divide-rule">
+                  <div class="text-center">
+                    <div
+                      class="text-4xl font-bold text-ink font-serif"
+                    >{{@controller.transcriptStats.wpm}}</div>
+                    <div
+                      class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
+                    >Words / min</div>
+                  </div>
+                  <div class="text-center">
+                    <div
+                      class="text-4xl font-bold text-ink font-serif"
+                    >{{@controller.transcriptStats.totalWords}}</div>
+                    <div
+                      class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
+                    >Total words</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-4xl font-bold text-ink font-serif">{{formatTime
+                        @controller.transcriptStats.durationSeconds
+                      }}</div>
+                    <div
+                      class="text-xs text-ink-tertiary font-sans uppercase tracking-wider mt-1"
+                    >Duration</div>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
 
           </div>
         </div>

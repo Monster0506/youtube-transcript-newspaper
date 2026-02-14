@@ -36,6 +36,7 @@ export default class TranscriptService extends Service {
       return {
         transcript: data.transcript || [],
         chapters: data.chapters || [],
+        title: data.title || '',
       };
     } catch (error) {
       this.error = error.message;
