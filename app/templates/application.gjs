@@ -6,49 +6,68 @@ import PhArrowLeft from 'ember-phosphor-icons/components/ph-arrow-left';
 import PhMoon from 'ember-phosphor-icons/components/ph-moon';
 import PhSun from 'ember-phosphor-icons/components/ph-sun';
 
+
 function speakerLines(segments) {
-  const text = segments.map((s) => s.text).join(' ');
-
-  // Multi-speaker: split on >> markers
-  if (text.includes('>>')) {
-    return text
-      .split(/(?=>>)/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-  }
-
-  // Sentence-based splitting — works when punctuation is present
-  const sentences = text.match(/[^.!?]+[.!?]+["']?/g) ?? [];
-  if (sentences.length >= 3) {
-    const CHUNK = 4;
-    const paras = [];
-    for (let i = 0; i < sentences.length; i += CHUNK) {
-      paras.push(
-        sentences
-          .slice(i, i + CHUNK)
-          .join(' ')
-          .trim()
-      );
-    }
-    return paras;
-  }
-
-  // Fallback for unpunctuated auto-captions: group by ~150 words
+  const fullText = segments.map((s) => s.text).join(' ');
   const TARGET = 150;
-  const paras = [];
-  let current = [];
-  let wordCount = 0;
-  for (const seg of segments) {
-    current.push(seg.text);
-    wordCount += seg.text.trim().split(/\s+/).length;
-    if (wordCount >= TARGET) {
-      paras.push(current.join(' ').trim());
-      current = [];
-      wordCount = 0;
+
+  // 1. Split on speaker markers (>>) — each block is one speaker's turn
+  const speakerBlocks = fullText
+    .split(/(?=>>)/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const paragraphs = [];
+
+  for (const block of speakerBlocks) {
+    // 2. Try to split each speaker block into sentences
+    const sentences = block.match(/[^.!?]+[.!?]+["']?/g);
+
+    if (sentences && sentences.length > 0) {
+      // Sentence-aware splitting: break at the sentence boundary closest to TARGET words
+      let current = [];
+      let wordCount = 0;
+
+      for (const sentence of sentences) {
+        const trimmed = sentence.trim();
+        const sentenceWords = trimmed.split(/\s+/).length;
+
+        current.push(trimmed);
+        wordCount += sentenceWords;
+
+        if (wordCount >= TARGET && current.length > 0) {
+          // Check: is it closer to TARGET with or without this sentence?
+          const withThis = wordCount;
+          const withoutThis = wordCount - sentenceWords;
+
+          if (current.length > 1 && Math.abs(withoutThis - TARGET) < Math.abs(withThis - TARGET)) {
+            // Closer without — break before this sentence
+            current.pop();
+            paragraphs.push(current.join(' '));
+            current = [trimmed];
+            wordCount = sentenceWords;
+          } else {
+            // Closer with — break after this sentence
+            paragraphs.push(current.join(' '));
+            current = [];
+            wordCount = 0;
+          }
+        }
+      }
+
+      if (current.length) {
+        paragraphs.push(current.join(' '));
+      }
+    } else {
+      // 3. No punctuation — fall back to raw word-count grouping
+      const words = block.split(/\s+/).filter(Boolean);
+      for (let i = 0; i < words.length; i += TARGET) {
+        paragraphs.push(words.slice(i, i + TARGET).join(' '));
+      }
     }
   }
-  if (current.length) paras.push(current.join(' ').trim());
-  return paras;
+
+  return paragraphs.length > 0 ? paragraphs : [fullText];
 }
 
 const currentYear = new Date().getFullYear();
